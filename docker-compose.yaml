@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-app-container
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      MYSQL_DB_CONNECTION: "mysql:host=db;dbname=db_prod"
+      MYSQL_DB_NAME: "db_prod"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: ""
+    networks:
+      - mynetwork     
+    volumes:
+      - app-data:/test/path/data
+
+  db:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: db_prod
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./script.sql:/docker-entrypoint-initdb.d/script.sql
+
+volumes:
+  app-data:
+  mysql-data:
+  db_data:
+
+networks:
+  mynetwork:
+    external: true
+
+#Create the network using this command --> docker network create -d bridge --subnet 192.168.3.0/24 --gateway 192.168.3.1 mynetwork
