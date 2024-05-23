@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: bahizak01/jenkins_test:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: MYSQL_DB_CONNECTION
+              value: "mysql:host=db-service;dbname=db_prod"
+            - name: MYSQL_DB_NAME
+              value: db_prod
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              value: ""
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: myapp
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 80
+      nodePort: 31000
