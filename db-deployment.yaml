@@ -24,6 +24,18 @@ spec:
               value: "yes"
             - name: MYSQL_DATABASE
               value: db_prod
+          volumeMounts:
+            - name: sql-volume
+              mountPath: /docker-entrypoint-initdb.d/script.sql
+            - name: data-volume
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: sql-volume
+          persistentVolumeClaim:
+            claimName: sql-pvc
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: data-pvc
 
 ---
 
