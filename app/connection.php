@@ -1,5 +1,5 @@
 <?php
-    $dsn = "mysql:dbname=db_prod;host=db-service";
+    $dsn = "mysql:dbname=db_prod;host=db";
     $user = "root";
     $password = "";
 
