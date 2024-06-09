@@ -17,8 +17,6 @@ services:
       MYSQL_PASSWORD: ""
     networks:
       - mynetwork     
-    volumes:
-      - app-data:/test/path/data
 
   db:
     image: mysql:latest
@@ -35,7 +33,6 @@ services:
       - ./script.sql:/docker-entrypoint-initdb.d/script.sql
 
 volumes:
-  app-data:
   mysql-data:
   db_data:
 
