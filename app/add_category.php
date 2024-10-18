@@ -1,7 +1,6 @@
 <?php
     ob_start();
     include "connection.php";
-    //chihaja
     if(isset($_POST['btn'])) {
         $categoryName = $_POST['category_name'];
 
